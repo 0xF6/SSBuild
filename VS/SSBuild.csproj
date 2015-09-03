@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
+    <Reference Include="RC.Core, Version=7.5.0.0, Culture=neutral, PublicKeyToken=906beca1b5e84690, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Async\rc.framework\Bin\RC.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.RegularExpressions" />
@@ -53,11 +57,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\rc.framework\RC.Core.csproj">
-      <Project>{35a23b54-4d7b-43a0-8fa5-133feedc8c6a}</Project>
-      <Name>RC.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Soul.Core\Soul.Core.csproj">
+    <ProjectReference Include="..\..\Soul.Core\Soul.Core\Soul.Core.csproj">
       <Project>{9c286315-5f29-4684-a3c4-485cf9505219}</Project>
       <Name>Soul.Core</Name>
     </ProjectReference>
