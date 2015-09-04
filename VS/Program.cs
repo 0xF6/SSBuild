@@ -1,4 +1,13 @@
-﻿using Rc.Framework;
+﻿// =========================================================================//==============================================================//
+//                                                                          //                                                              //
+//                                                                          //             Copyright © Of Fire Twins Wesp 2015              //
+// Author= {"Callada", "Another"}                                           //                                                              //
+// Project="Soul.Language"                                                  //                  Alise Wesp & Yuuki Wesp                     //
+// Version File="1.0"                                                       //                                                              //
+// License="root\\LICENSE", LicenseType="MIT"                               //                                                              //
+// =========================================================================//==============================================================//
+using Rc.Framework;
+using Soul.Core;
 using Soul.Core.Rex;
 using System;
 using System.Collections.Generic;
@@ -24,40 +33,15 @@ namespace SSBuild
             Terminal.WriteLine($"Support +g6 Runtime+g0  Platform: net.core +g2 4.0+g0 , soul.core +g2 1.0+g0 .", headerConsole);
             Terminal.WriteLine($"Copyright (C) Of Fire Twins Wesp 2015", headerConsole);
             //! End Write Header
-            
-            Regex r = new RegexBase().rex_method;
-            string sdahd =
-                @"
-                #include <Soul.dll>
-                // REGEX TEST BVEAASDASDASD
-                {WHILE(true) {asdasd}};
-                foreach(string src in strCode)
-                {
-                    if (src[0] == ('#'))
-                    {}
-                    else if (src[0] == '/' && src[1] == '/')
-                        break;
-                };
-                ";
-            MatchCollection col = Regex.Matches(sdahd, "(?m)" + RegexBase.PreProc.IncludeAssembly);
-            foreach (Match mt in col)
-            {
-                string str = mt.Value;
-            }
-
-
-            string code = File.ReadAllText("cad.soul");
-            string[] ArrayCode = code.Split('\n');
+            string code = File.ReadAllText("Code.soul");
+            string[] ArrayCode = code.Replace("\r", "").Split('\n');
 
             Parse(ArrayCode);
         }
 
         public static void Parse(string[] strCode)
         {
-            bool isMethod;
-            bool isEvent;
-            string NameMethod;
-            string TypeClassMethod;
+            List<LineProc> CodeData = new List<LineProc>();
             foreach(string src in strCode)
             {
                 if (src[0] == ('#'))
