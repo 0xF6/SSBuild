@@ -1,0 +1,8 @@
+#include <Soul.dll>
+#include <Framework.dll>
+#include "Visual.sh"
+#pragma lock "debug:true"
+void Method()
+{
+	string tm = "this method";
+};

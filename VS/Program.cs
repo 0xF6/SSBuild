@@ -35,13 +35,33 @@ namespace SSBuild
             //! End Write Header
             string code = File.ReadAllText("Code.soul");
             string[] ArrayCode = code.Replace("\r", "").Split('\n');
-
-            Parse(ArrayCode);
+            List<LineProc> CodeData = new List<LineProc>();
+            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
+            foreach(Match Mt in rexIncludeAssembly.Matches(code))
+            {
+                LineProc Line = new LineProc();
+                Line.Line = (ulong)Mt.Index;
+                // Чертова математика..
+                //x Line.Line = (ulong)Mt.Index - (ulong)Mt.Length + 1;
+                //x Line.Line = (ulong)Mt.Index - (ulong)Mt.Index + 1;
+                Line.Assembly = Mt.Value.Replace("#include ", "").Replace("<", "").Replace(">", "");
+                CodeData.Add(Line);
+                Terminal.WriteLine($"Include Assembly, Line:{Line.Line}, isSuccess:{Mt.Success}, Assembly:{Line.Assembly}");
+            }
+            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
+            foreach (Match Mt in rexIncludeSoulHeader.Matches(code))
+            {
+                LineProc Line = new LineProc();
+                Line.Line = (ulong)Mt.Index;
+                Line.SoulHeader = Mt.Value.Replace("#include ", "").Replace("\"", "").Replace("\'", "");
+                CodeData.Add(Line);
+                Terminal.WriteLine($"Include Header, Line:{Line.Line}, isSuccess:{Mt.Success}, Header:{Line.SoulHeader}");
+            }
+            Parse(ArrayCode, ref CodeData);
         }
 
-        public static void Parse(string[] strCode)
+        public static void Parse(string[] strCode, ref List<LineProc> lst)
         {
-            List<LineProc> CodeData = new List<LineProc>();
             foreach(string src in strCode)
             {
                 if (src[0] == ('#'))
