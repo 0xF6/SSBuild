@@ -9,6 +9,7 @@
 using Rc.Framework;
 using Soul.Core;
 using Soul.Core.Rex;
+using Soul.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,15 +17,19 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SSBuild
 {
-    class Program
+    class xInput
     {
-        internal static string headerConsole = "+g4 Soul+g0 ";
+        internal const string headerConsole = "+g4 Soul+g0 ";
+        internal const string headerError = "+g6 Error+g0 ";
         internal static string versionBuild = "1.4";
 
         internal static List<string> IncludeAssembly = new List<string>();
+        internal static bool isStopCompile;
+
         static void Main(string[] args)
         {
             //! Write Header SSBuild
@@ -36,19 +41,39 @@ namespace SSBuild
             Parse(args[0]);
         }
 
+        public static int line = 0;
+        public static int pos = 0;
+
         public static void Parse(string FileName)
         {
             // Regex
             Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
             Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
             //
-            int line;
-            int pos;
+            
             // Read
-            using (FileStream stream = File.OpenRead(FileName))
+            using (StreamReader stream = File.OpenText(FileName))
             {
-
+                string linecode = stream.ReadLine();
+                line++;
             }
+        }
+
+        public static bool isRegexData(string str)
+        {
+            return true;
+        }
+
+
+
+
+
+
+
+
+        public static void ErrorSyntax(SoulError er)
+        {
+            Terminal.WriteLine(er.ConvertToString(), xInput.headerError);
         }
     }
 }
