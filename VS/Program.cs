@@ -33,47 +33,20 @@ namespace SSBuild
             Terminal.WriteLine($"Support +g6 Runtime+g0  Platform: net.core +g2 4.0+g0 , soul.core +g2 1.0+g0 .", headerConsole);
             Terminal.WriteLine($"Copyright (C) Of Fire Twins Wesp 2015", headerConsole);
             //! End Write Header
-            string code = File.ReadAllText("Code.soul");
-            string[] ArrayCode = code.Replace("\r", "").Split('\n');
-            List<LineProc> CodeData = new List<LineProc>();
-            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
-            foreach(Match Mt in rexIncludeAssembly.Matches(code))
-            {
-                LineProc Line = new LineProc();
-                Line.Line = (ulong)Mt.Index;
-                // Чертова математика..
-                //x Line.Line = (ulong)Mt.Index - (ulong)Mt.Length + 1;
-                //x Line.Line = (ulong)Mt.Index - (ulong)Mt.Index + 1;
-                Line.Assembly = Mt.Value.Replace("#include ", "").Replace("<", "").Replace(">", "");
-                CodeData.Add(Line);
-                Terminal.WriteLine($"Include Assembly, Line:{Line.Line}, isSuccess:{Mt.Success}, Assembly:{Line.Assembly}");
-            }
-            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
-            foreach (Match Mt in rexIncludeSoulHeader.Matches(code))
-            {
-                LineProc Line = new LineProc();
-                Line.Line = (ulong)Mt.Index;
-                Line.SoulHeader = Mt.Value.Replace("#include ", "").Replace("\"", "").Replace("\'", "");
-                CodeData.Add(Line);
-                Terminal.WriteLine($"Include Header, Line:{Line.Line}, isSuccess:{Mt.Success}, Header:{Line.SoulHeader}");
-            }
-            Parse(ArrayCode, ref CodeData);
+            Parse(args[0]);
         }
 
-        public static void Parse(string[] strCode, ref List<LineProc> lst)
+        public static void Parse(string FileName)
         {
-            foreach(string src in strCode)
+            // Regex
+            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
+            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
+            //
+            int line;
+            int pos;
+            // Read
+            using (FileStream stream = File.OpenRead(FileName))
             {
-                if (src[0] == ('#'))
-                {
-
-                }
-                else if (src[0] == '/' && src[1] == '/')
-                    break;
-                else if (src.Contains("event"))
-                {
-
-                }
 
             }
         }
