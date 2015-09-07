@@ -46,34 +46,36 @@ namespace SSBuild
 
         public static void Parse(string FileName)
         {
-            // Regex
-            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
-            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
-            //
-            
             // Read
             using (StreamReader stream = File.OpenText(FileName))
             {
+                S_START:
                 string linecode = stream.ReadLine();
                 line++;
+                if (isRegexData(linecode))
+                {
+                    ParseRegex(linecode);
+                    goto S_START;
+                }
             }
         }
-
         public static bool isRegexData(string str)
         {
-            return true;
+            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
+            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
+
+            Match mtAssembly = rexIncludeAssembly.Match(str);
+            Match mtHeader = rexIncludeSoulHeader.Match(str);
+            if (mtHeader.Success || mtAssembly.Success)
+                return true;
+            else
+                return false;
         }
-
-
-
-
-
-
-
-
+        public static void ParseRegex(string str)
+        { }
         public static void ErrorSyntax(SoulError er)
         {
-            Terminal.WriteLine(er.ConvertToString(), xInput.headerError);
+            Terminal.WriteLine($"[{line}:{pos}]:{er.ConvertToString()}", xInput.headerError);
         }
     }
 }
