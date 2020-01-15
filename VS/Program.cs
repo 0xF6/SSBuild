@@ -1,42 +1,35 @@
-﻿// =========================================================================//==============================================================//
-//                                                                          //                                                              //
-//                                                                          //             Copyright © Of Fire Twins Wesp 2015              //
-// Author= {"Callada", "Another"}                                           //                                                              //
-// Project="Soul.Language"                                                  //                  Alise Wesp & Yuuki Wesp                     //
-// Version File="1.0"                                                       //                                                              //
-// License="root\\LICENSE", LicenseType="MIT"                               //                                                              //
-// =========================================================================//==============================================================//
-using Rc.Framework;
-using Soul.Core;
-using Soul.Core.Rex;
-using Soul.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace SSBuild
+﻿namespace SSBuild
 {
-    class xInput
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using RC.Framework;
+    using Soul.Core.Rex;
+    using Soul.Core.Types;
+
+    internal class xInput
     {
-        internal const string headerConsole = "+g4 Soul+g0 ";
-        internal const string headerError = "+g6 Error+g0 ";
+        internal const string headerConsole = "§4 Soul§0 ";
+        internal const string headerError = "§6 Error§0 ";
         internal static string versionBuild = "1.4";
 
         internal static List<string> IncludeAssembly = new List<string>();
-        internal static bool isStopCompile;
+        public static bool isStopCompile;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //! Write Header SSBuild
-            Terminal.WriteLine($"Version:{versionBuild}", headerConsole);
-            Terminal.WriteLine($"Soul Sharp Builder.", headerConsole);
-            Terminal.WriteLine($"Support +g6 Runtime+g0  Platform: net.core +g2 4.0+g0 , soul.core +g2 1.0+g0 .", headerConsole);
-            Terminal.WriteLine($"Copyright (C) Of Fire Twins Wesp 2015", headerConsole);
+            Terminal.WriteLine($"Version:{versionBuild}");
+            Terminal.WriteLine($"Soul Sharp Builder.");
+            Terminal.WriteLine($"Support §6 Runtime§0  Platform: dotnet §24.0§0, soul.core §2 1.0§0 .");
+            Terminal.WriteLine($"Copyright (C) Of Fire Twins Wesp 2015");
+
+            if (!args.Any())
+            {
+                return;
+            }
+
             //! End Write Header
             Parse(args[0]);
         }
@@ -59,23 +52,21 @@ namespace SSBuild
                 }
             }
         }
+
         public static bool isRegexData(string str)
         {
-            Regex rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
-            Regex rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IcludeSoulHeader);
+            var rexIncludeAssembly = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeAssembly);
+            var rexIncludeSoulHeader = new Regex(RegexBase.MultiLine + RegexBase.PreProc.IncludeSoulHeader);
 
-            Match mtAssembly = rexIncludeAssembly.Match(str);
-            Match mtHeader = rexIncludeSoulHeader.Match(str);
-            if (mtHeader.Success || mtAssembly.Success)
-                return true;
-            else
-                return false;
+            var mtAssembly = rexIncludeAssembly.Match(str);
+            var mtHeader = rexIncludeSoulHeader.Match(str);
+            return mtHeader.Success || mtAssembly.Success;
         }
+
         public static void ParseRegex(string str)
         { }
+
         public static void ErrorSyntax(SoulError er)
-        {
-            Terminal.WriteLine($"[{line}:{pos}]:{er.ConvertToString()}", xInput.headerError);
-        }
+            => Terminal.WriteLine($"[{line}:{pos}]:{er.ConvertToString()}");
     }
 }
